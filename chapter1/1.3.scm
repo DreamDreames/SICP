@@ -1,0 +1,5 @@
+(define (sum a b c)
+	(cond ((< a b) (sum b a c)) 
+	      ((< b c) (sum a c b))
+	      (else (+ a b) ))
+  )

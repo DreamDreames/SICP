@@ -15,3 +15,11 @@
 
 (define (sqrt x)
   (sqrt-iter 2.0 1.0 x))
+
+
+
+;; another good enough. Quote from one solution
+;; "in real computers, arithmetic operations are almost always performed with limited precision".
+;; Given that it's done with limited precision, at some point, improve doesn't actually change the guess any more.
+(define (another-good-enough? guess x)
+  (= guess (improve guess x) ))

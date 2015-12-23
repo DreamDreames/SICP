@@ -5,7 +5,7 @@
 
 
 (define (improve guess x)
-  (/ (+ (* 2 guess) (/ x (* guess guess))) 3))
+  (/ (+ (* 2 guess) (/ x (square guess))) 3))
 
 
 (define (good-enough? guess x)

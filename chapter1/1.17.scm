@@ -1,18 +1,9 @@
 (define (fast* a b)
-  (define (double a)
-    (* a 2))
+  (define (double x) (+ x x))
+  (define (halve x) (/ x 2))
 
-  (define (halve a)
-    (/ a 2))
+  (define (even? x) (= (remainder x 2) 0))
 
-  (define (even? n)
-    (= (remainder n 2) 0))
-
-  (define (iter n a b)
-    (cond ((= a 0) n)
-	  ((even? a) (iter n (halve a) (double b)))
-	  (else (iter (+ n b) (- a 1) b))))
-
-  (iter 0 a b))
-	
-
+  (cond ((= b 0) 0)
+	((even? b) (double (fast* a (halve b))))
+	(else (+ a (fast* a (- b 1))))))

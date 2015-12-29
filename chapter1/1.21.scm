@@ -1,6 +1,6 @@
 (define (smallest-divisor a)
   (define (iter n a)
-    (cond ((>= n a) a)
+    (cond ((> (square n) a) a)
 	  ((divid? n a) n)
 	  (else (iter (+ n 1) a))))
   (define (divid? x y)

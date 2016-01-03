@@ -15,13 +15,11 @@
 
   (define h (/ (- b a) n))
 
-  (define (y k)
-    (f (+ a (* k h))))
-
-  (define (simpson k)
+  (define (simpson k) 
+    (define y (f (+ a (* k h))))
     (if (or (= k 0) (= k n)) 
-      (y k)
-      (if (even? k) (* 2 (y k)) (* 4 (y k)))))
+      y
+      (if (even? k) (* 2 y) (* 4 y))))
 
   (* (/ h 3) (sum simpson 0 inc n)))
 

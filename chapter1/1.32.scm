@@ -5,6 +5,7 @@
       (accu-iter (next a) (combiner result (term a)))))
   (accu-iter a null-value))
 
+  ;; Recursive version of accululate
   ;;(if (> a b)
     ;;null-value
     ;;(combiner (term a) (accumulate combiner null-value term (next a) next b))))

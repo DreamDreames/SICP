@@ -5,4 +5,5 @@
 
 (f (lambda (z) (* z (+ z 1))))
 
-
+;; Error
+;;(f f)

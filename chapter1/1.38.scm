@@ -7,12 +7,12 @@
   (iter 0 k))
 
 (define (euler-e k)
-  (cont-frac (lambda (i) 1.0)
+  (+ 2.0 (cont-frac (lambda (i) 1.0)
 	     (lambda (i) 
 	       (if (= (remainder (+ 1 i) 3) 0)
-		 (* (/ (+ i 1) 3) 2)
+		 (/ (+ i 1) 1.5)
 		 1))
-	     k))
+	     k)))
 
 (define k 20)
 

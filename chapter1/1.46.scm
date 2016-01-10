@@ -18,6 +18,10 @@
     (lambda (y) 
       (/ (+ (/ x y) y) 2.0))) 1.0))
 
+(define (fixed-point f first-guess)
+  ((iterative-improve
+     good-enough?
+     f) first-guess))
 
 (newline)
 (display (sqrt 2))

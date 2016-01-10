@@ -35,5 +35,3 @@
   (make-segment
     (make-point 1 1)
     (make-point 2 2))))
-    
-	

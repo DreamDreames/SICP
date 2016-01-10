@@ -21,7 +21,13 @@
      (* (numer y) (denom x))))
 
 
-(define (make-rat n d) (cons n d))
+(define (make-rat n d) 
+  (define (gcd a b)
+    (if (= b 0) 
+      a
+      (gcd b (remainder a b))))
+  (let ((g (gcd n d)))
+    (cons (/ n g) (/ d g))))
 
 (define (numer x) (car x))
 

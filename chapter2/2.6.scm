@@ -18,10 +18,30 @@
 (define two
   ; two is add-one one
   ;(add-1 one)
+  ; that is
   ;(lambda (f) (lambda (x) (f ((one f) x)))))
   ; replace one with its definition
   ; we have
   (lambda (f) (lambda (x) (f (f x)))))
 
 
+(define three
+  ;(add-1 two))
+  ; that is
+  ;(lambda (f) (lambda (x) (f ((two f) x)))))
+  ; that is
+  ;(lambda (f) (lambda (x) (f ((lambda (x) (f (f x))) x))))
+  (lambda (f) (lambda (x) (f (f (f x))))))
 
+; To use the numbers
+(define (church-to-int cn)
+  ((cn (lambda (n) (+ n 1))) 0))
+
+(newline)
+(display (church-to-int zero))
+(newline)
+(display (church-to-int one))
+(newline)
+(display (church-to-int two))
+(newline)
+(display (church-to-int three))

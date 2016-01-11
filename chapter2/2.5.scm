@@ -35,3 +35,25 @@
 (display (cdr n))
 
 
+
+;; Another implementation from SICP-Solutions
+(define (cons a b)
+  (* (expt 2 a) (expt 3 b)))
+
+(define (car x)
+  (if (= (gcd x 2) 1)
+    0
+    (+ 1 (car (/ x 2)))))
+
+(define (cdr x)
+  (if (= (gcd x 3) 1)
+    0
+    (+ 1 (cdr (/ x 3)))))
+
+(define n (cons 4 5))
+(newline)
+(display "car: ")
+(display (car n))
+(newline)
+(display "cdr: ")
+(display (cdr n))

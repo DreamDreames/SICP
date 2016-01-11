@@ -33,6 +33,14 @@
   ;(lambda (f) (lambda (x) (f ((lambda (x) (f (f x))) x))))
   (lambda (f) (lambda (x) (f (f (f x))))))
 
+
+; Magic...
+(define (add a b)
+  (lambda (f)
+    (lambda (x)
+      ((a f) ((b f) x)))))
+
+
 ; To use the numbers
 (define (church-to-int cn)
   ((cn (lambda (n) (+ n 1))) 0))

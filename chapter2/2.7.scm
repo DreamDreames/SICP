@@ -19,7 +19,7 @@
   (cons a b))
 
 (define (lower-bound x)
-  (car x))
+  (min (car x) (cdr x))
 
 (define (upper-bound x)
-  (cdr x))
+  (max (cdr x) (cdr x))

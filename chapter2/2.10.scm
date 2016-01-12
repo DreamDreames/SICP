@@ -1,0 +1,33 @@
+(define (add-interval x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+		 (+ (upper-bound x) (upper-bound y))))
+
+(define (mul-interval x y)
+  (let ((p1 (* (lower-bound x) (lower-bound y)))
+	(p2 (* (lower-bound x) (upper-bound y)))
+	(p3 (* (upper-bound x) (lower-bound y)))
+	(p4 (* (upper-bound x) (upper-bound y))))
+    (make-interval (min p1 p2 p3 p4)
+		   (max p1 p2 p3 p4))))
+
+(define (div-interval x y)
+  (mul-interval x
+		(if (< (* (lower-bound y) (upper-bound y)) 0)
+		  (error "Division error (interval spans 0)") 
+		  (make-interval (/ 1.0 (upper-bound y))
+			       (/ 1.0 (lower-bound y))))))
+
+(define (display-interval i)
+  (newline)
+  (display "[")
+  (display (lower-bound i))
+  (display ",")
+  (display (upper-bound i))
+  (display "]"))
+
+(define l (make-interval 0 1))
+(define r (make-interval -1 1))
+(define a (make-interval 1 2))
+(define b (make-interval 3 4))
+(display-interval (div-interval a b))
+(display-interval (div-interval l r))

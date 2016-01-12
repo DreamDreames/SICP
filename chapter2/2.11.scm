@@ -1,0 +1,58 @@
+(define (add-interval x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+		 (+ (upper-bound x) (upper-bound y))))
+
+(define (mul-interval x y)
+  (define (endpoint-sign i)
+    (cond ((and (>= (upper-bound i) 0)
+		(>= (lower-bound i) 0))
+	   1)
+	  ((and (< (upper-bound i) 0)
+		(< (lower-bound i) 0))
+	   -1)
+	  (else 0)))
+  (let ((es-x (endpoint-sign x))
+	(es-y (endpoint-sign y))
+	(x-up (upper-bound x))
+	(x-lo (lower-bound x))
+	(y-up (upper-bound y))
+	(y-lo (lower-bound y)))
+    (if (and (= es-x 0) (= es-y 0))
+      (make-interval (min (* x-lo y-up) (* x-up y-lo))
+		     (max (* x-lo y-lo) (* x-up y-up)))
+      (let ((a1 (if (and (<= es-y 0) (<= (- es-y es-x) 0)) x-up x-lo))
+	    (a2 (if (and (<= es-x 0) (<= (- es-x es-y) 0)) y-up y-lo))
+	    (b1 (if (and (<= es-y 0) (<= (+ es-y es-x) 0)) x-lo x-up))
+	    (b2 (if (and (<= es-x 0) (<= (+ es-x es-y) 0)) y-lo y-up)))
+	(make-interval (* a1 a2) (* b1 b2))))))
+
+(define (sub-interval x y)
+  (make-interval (- (lower-bound x) (upper-bound y))
+		 (- (upper-bound x) (lower-bound y))))
+
+(define (div-interval x y)
+  (mul-interval x
+		(make-interval (/ 1.0 (upper-bound y))
+			       (/ 1.0 (lower-bound y)))))
+
+(define (make-interval a b)
+  (cons a b))
+
+(define (lower-bound x)
+  (min (car x) (cdr x)))
+
+(define (upper-bound x)
+  (max (car x) (cdr x)))
+
+(define (display-interval x)
+  (newline)
+  (display "[")
+  (display (lower-bound x))
+  (display ",")
+  (display (upper-bound x))
+  (display "]"))
+
+(define a (make-interval 1 3))
+(define b (make-interval 2 8))
+(display-interval (mul-interval a b))
+

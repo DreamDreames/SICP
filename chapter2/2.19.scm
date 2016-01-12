@@ -1,5 +1,4 @@
-;(define us-coins (list 50 25 10 5 1))
-(define us-coins (list 1 5 10 25 50))
+(define us-coins (list 50 25 10 5 1))
 (define uk-coins (list 100 50 20 10 5 2 1 0.5))
 
 (define (cc amount coin-values)
@@ -25,5 +24,11 @@
 (define (no-more? items)
   (null? items))
 
+(cc 100 us-coins)
+; 292
+
+(define first-denomination car)
+(define except-first-denomination cdr)
+(define no-more? null?)
 (cc 100 us-coins)
 ; 292

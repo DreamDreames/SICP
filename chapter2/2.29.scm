@@ -16,7 +16,7 @@
 
 (define (branch-structure branch)
   (begin
-    (bkpt branch) 
+    ;(bkpt branch) 
     (car (cdr branch))))
 
 ; b)
@@ -30,10 +30,21 @@
       struct)))
 
 (define (total-weight mobile)
+    (+ (branch-weight (left-branch mobile))
+       (branch-weight (right-branch mobile))))
+
+; c)
+(define (branch-torque branch)
+  (* (branch-weight branch)
+     (branch-length branch)))
+
+(define (balance? mobile)
   (let ((left (left-branch mobile))
-	(right (right-branch mobile)))
-    (+ (branch-weight left)
-       (branch-weight right))))
+	(right (right-branch mobile))) 
+    (and ((= (branch-torque (left-branch mobile)) 
+	     (branch-torque (right-branch mobile))))
+	 (balance? left)
+	 (balance? right))))
 
 (define mobile1 (make-mobile (make-branch 2 1)
 			     (make-branch 1 2)))

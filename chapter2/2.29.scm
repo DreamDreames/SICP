@@ -15,7 +15,9 @@
   (car branch))
 
 (define (branch-structure branch)
-  (car (cdr branch)))
+  (begin
+    (bkpt branch) 
+    (car (cdr branch))))
 
 ; b)
 (define (structure-is-mobile? structure)
@@ -35,15 +37,21 @@
 
 (define mobile1 (make-mobile (make-branch 2 1)
 			     (make-branch 1 2)))
+(newline)
+(display mobile1)
 
 (define mobile2 (make-mobile (make-branch 3 mobile1)
 			     (make-branch 9 1)))
+(newline)
+(display mobile2)
 
 (define mobile3 (make-mobile (make-branch 4 mobile2)
 			     (make-branch 8 2)))
+(newline)
+(display mobile3)
 
 (newline)
-(display (total-weight mobile1))
+;(display (total-weight mobile1))
 (newline)
 (display (total-weight mobile2))
 (newline)

@@ -27,3 +27,18 @@
 (define another-tree (list 1 2 (list 3 4) (list 5 (list 6 7))))
 (newline)
 (display (count-leaves another-tree))
+; 7
+
+; Another solution from SICP-Solutions
+(define (count-leaves-recursive tree)
+  (accumulate +
+	      0
+	      (map (lambda (node)
+		     (if (pair? node)
+		       (count-leaves-recursive node)
+		       1))
+		   tree)))
+
+(newline)
+(display (count-leaves-recursive another-tree))
+; 7

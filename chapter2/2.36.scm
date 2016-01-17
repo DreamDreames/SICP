@@ -6,10 +6,10 @@
 	(accumulate op initial (cdr sequence)))))
 
 (define (first-dimon sequence)
-  (map (lambda (x) (car x)) sequence))
+  (map car sequence))
 
 (define (rest-dimon sequence)
-  (map (lambda (x) (cdr x)) sequence))
+  (map cdr sequence))
 
 (define (accumulate-n op init seqs)
   (if (null? (car seqs))

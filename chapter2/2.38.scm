@@ -27,3 +27,6 @@
 (newline)
 (display (folder-left list nil (list 1 2 3)))
 ; (((() 1) 2) 3)
+
+; op must be commutative to make sure folder-left and folder-right
+; generate the same results for the same sequence

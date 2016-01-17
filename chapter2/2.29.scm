@@ -26,7 +26,7 @@
 (define (branch-weight branch)
   (let ((struct (branch-structure branch))) 
     (if (structure-is-mobile? struct) 
-      (total-weight branch)
+      (total-weight struct)
       struct)))
 
 (define (total-weight mobile)
@@ -62,7 +62,7 @@
 (display mobile3)
 
 (newline)
-;(display (total-weight mobile1))
+(display (total-weight mobile1))
 (newline)
 (display (total-weight mobile2))
 (newline)

@@ -6,7 +6,8 @@
     (let ((rest (subsets (cdr s))))
       (append rest 
 	      (map (lambda (x) 
-		     (append (list (car s)) x)) 
+		     ;(append (list (car s)) x)) 
+		     (cons (car s) x))
 		   rest)))))
 
 (subsets (list 1 2 3))

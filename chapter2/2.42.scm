@@ -36,27 +36,31 @@
 	(else (in? x (cdr seq)))))
 
 (define (same-line-safe? k positions)
-  (define (same-line-iter start seq status)
-    (if (> start k) 
-      #t
-      (cond ((in? (car seq) (cdr seq)) #f)
-	    ((= (car seq) start) (if status #f (same-line-iter (+ start 1) (cdr seq) #t)))
-	    (else (same-line-iter (+ start 1) (cdr seq) status)))))
-
-  (same-line-iter 1 positions #f))
+  (if (null? positions)
+    #t
+    (not (in? (car positions) (cdr positions)))))
 
 (define (diff-line-safe? k positions)
-  (define (diff-line-iter start seq)
-    (if (> start k)
-      #f
-      (if (not (in? start seq))
-	#t
-	(diff-line-iter (+ start 1) (cdr seq)))))
-  (diff-line-iter 1 positions))
+  (define (iter x y index seq)
+    (cond ((null? seq) #t)
+	  ((or (= (- y index) (- x (car seq)))
+	       (= (- y index) (- (car seq) x)))
+	   #f)
+	  (else
+	    (iter x y (+ index 1) (cdr seq)))))
+  (iter (car positions) k 2 (cdr positions)))
 
 (define (safe? k positions)
-  (and (same-line-safe? k positions) 
-       (diff-line-safe? k positions)))
+  (define pos (car positions))
+  (define (iter top bottom seq)
+    (cond ((null? seq) 
+	   #t) 
+	  ((or (= top (car seq)) 
+	       (= bottom (car seq)) 
+	       (= pos (car seq))) 
+	   #f) 
+	  (else (iter (- top 1) (+ bottom 1) (cdr seq)))))
+    (iter (- pos 1) (+ pos 1) (cdr positions)))
 
 (define (queens board-size)
   (define (queen-cols k)
@@ -76,4 +80,6 @@
 
 (newline)
 (define ans (queens 8))
-(ans)
+(display ans)
+(newline)
+(display (length ans))

@@ -4,7 +4,8 @@
 (define origin-frame car)
 (define edge1-frame cadr)
 (define edge2-frame 
-  (lambda (f) (cadr (cdr f))))
+  ;(lambda (f) (cadr (cdr f))))
+  caddr)
 
 (define f (make-frame 0 1 2))
 (newline)
@@ -20,7 +21,8 @@
 (define origin-frame car)
 (define edge1-frame cadr)
 (define edge2-frame 
-  (lambda (f) (cdr (cdr f))))
+  ;(lambda (f) (cdr (cdr f))))
+  cddr)
 
 (define f (make-frame 0 1 2))
 (newline)

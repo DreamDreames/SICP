@@ -1,0 +1,30 @@
+(define make-vect cons)
+(define xcor-vect car)
+(define ycor-vect cdr)
+
+(define (add-vect v1 v2)
+  (make-vect (+ (xcor-vect v1) (xcor-vect v2))
+	     (+ (ycor-vect v1) (ycor-vect v2))))
+
+(define (sub-vect v1 v2)
+  (make-vect (- (xcor-vect v1) (xcor-vect v2))
+	     (- (ycor-vect v1) (ycor-vect v2))))
+
+(define (scale-vect s v)
+  (make-vect (* s (xcor-vect v))
+	     (* s (ycor-vect v))))
+
+(define v (make-vect 1 2))
+(newline)
+(display v)
+(newline)
+(display (xcor-vect v))
+(newline)
+(display (ycor-vect v))
+(newline)
+(display (add-vect v v))
+(newline)
+(display (sub-vect v v))
+(newline)
+(display (scale-vect 3 v))
+

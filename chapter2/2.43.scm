@@ -79,7 +79,7 @@
   (queen-cols board-size))
 
 (newline)
-(define ans (queens 8))
+(define ans (queens 6))
 (display ans)
 (newline)
 (display (length ans))

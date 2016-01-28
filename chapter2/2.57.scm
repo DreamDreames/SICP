@@ -1,3 +1,9 @@
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+    initial
+    (op (car sequence)
+	(accumulate op initial (cdr sequence)))))
+
 (define (variable? x) (symbol? x))
 (define (same-variable? v1 v2)
   (and (variable? v1) (variable? v2) (eq? v1 v2))) 
@@ -25,6 +31,9 @@
   (if (null? (cdddr s))
     (caddr s)
     (make-sum (caddr s) (cadddr s))))
+; Another solution with accumulate
+(define (augend s)
+  (accumulate make-sum 0 (cddr s)))
 
 (define (product? x)
   (and (pair? x) (eq? (car x) '*)))
@@ -34,6 +43,9 @@
   (if (null? (cdddr p))
     (caddr p)
     (make-product (caddr p) (cadddr p))))
+; Another solution with accumulate
+(define (multiplicand p)
+  (accumulate make-product 1 (cddr p)))
 
 (define (deriv exp var)
   (cond ((number? exp) 0)

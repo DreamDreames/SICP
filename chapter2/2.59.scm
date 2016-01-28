@@ -21,6 +21,11 @@
 	(else (adjoin-set (car set1) 
 			  (union-set (cdr set1) 
 				     set2)))))
+; another solution with tail recursive
+(define (union-set set1 set2)
+  (if (null? set1)
+    set2
+    (union-set (cdr set1) (adjoin-set (car set1) set2))))
 
 (newline)
 (display (union-set '(1 2) '(3)))

@@ -21,13 +21,19 @@
 (define (sum? x)
   (and (pair? x) (eq? (car x) '+)))
 (define (addend s) (cadr s))
-(define (augend s) (caddr s))
+(define (augend s) 
+  (if (null? (cdddr s))
+    (caddr s)
+    (make-sum (caddr s) (cadddr s))))
 
 (define (product? x)
   (and (pair? x) (eq? (car x) '*)))
 
 (define (multiplier p) (cadr p))
-(define (multiplicand p) (caddr p))
+(define (multiplicand p) 
+  (if (null? (cdddr p))
+    (caddr p)
+    (make-product (caddr p) (cadddr p))))
 
 (define (deriv exp var)
   (cond ((number? exp) 0)

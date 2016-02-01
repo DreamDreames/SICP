@@ -27,13 +27,17 @@
 ; (2 3)
 
 (define (adjoin-set x set)
-  (define (adjoin left right x)
+  (define (adjoin left right)
     (cond ((null? right) (append left (list x)))
 	  ((<= x (car right)) (append left (cons x right)))
 	  (else
-	    (adjoin (append left (list (car right))) (cdr right) x))))
-  (adjoin '() set x))
+	    (adjoin (append left (list (car right))) (cdr right)))))
+  (adjoin '() set))
 
+(define (adjoin-set x set)
+  (if (or (null? set) (<= x (car set))) 
+    (cons x set)
+    (cons (car set) (adjoin-set x (cdr set)))))
 
 (newline)
 (display (adjoin-set 3 '(1 2 4)))

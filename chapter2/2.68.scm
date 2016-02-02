@@ -78,23 +78,14 @@
     (if (eq? (symbol-leaf tree) letter)
       '()
       (error "bad letter -- encode-symbol" letter))
-    (if (element-of-tree? letter (left-branch tree))
+    (if (element-of-set? letter (symbols (left-branch tree)))
       (cons 0 (encode-symbol letter (left-branch tree)))
       (cons 1 (encode-symbol letter (right-branch tree))))))
 
-;  (cond ((and (leaf? tree) (eq? (symbol tree) letter)) '())
-;	((element-of-tree? letter (left-branch tree)) 
-;	 (cons 0 (encode-symbol letter (left-branch tree)))) 
-;	((element-of-tree? letter (right-branch tree))
-;	 (cons 1 (encode-symbol letter (right-branch tree))))
-;	(else 
-;	  (error "bad letter -- encode-symbol" letter))))
-
-(define (element-of-tree? letter tree)
-  (cond ((null? tree) false)
-	((leaf? tree) (eq? letter (symbol-leaf tree)))
-	((or (element-of-tree? letter (left-branch tree))) 
-	 (element-of-tree? letter (right-branch tree)))))
+(define (element-of-set? x set)
+  (cond ((null? set) #f)
+	((eq? x (car set)) #t)
+	(else (element-of-set? x (cdr set)))))
 
 (define (encode-message message tree)
   (if (null? message)

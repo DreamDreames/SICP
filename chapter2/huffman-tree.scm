@@ -2,7 +2,7 @@
   (list 'leaf symbol weight))
 
 (define (leaf? object)
-  (ea? (car object) 'leaf))
+  (eq? (car object) 'leaf))
 
 (define (symbol-leaf x) (cadr x))
 
@@ -21,12 +21,12 @@
 (define (symbols tree)
   (if (leaf? tree)
     (list (symbol-leaf tree))
-    (cadddr tree)))
+    (caddr tree)))
 
 (define (weight tree)
   (if (leaf? tree)
     (weight-leaf tree)
-    (caddr tree)))
+    (cadddr tree)))
 
 (define (decode bits tree)
   (define (decode-1 bits current-branch)

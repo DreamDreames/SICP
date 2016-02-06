@@ -111,11 +111,6 @@
     (car pairs)
     (successive-merge (adjoin-set (make-code-tree (car pairs) (cadr pairs)) (cddr pairs)))))
 
-    ;(let ((first (car leaf-set))
-	  ;(second (cadr leaf-set))
-	  ;(rest (cddr leaf-set)))
-      ;(successive-merge (adjoin-set (make-code-tree first second) rest)))))
-
 (newline)
 (define tree (generate-huffman-tree pairs))
 (display tree)

@@ -1,3 +1,5 @@
+;; (put <op> <type> <item>)
+;; (get <op> <type>)
 (define global-array '())
 
 (define (make-entry k v) (list k v))

@@ -1,14 +1,11 @@
 (define (make-monitored f)
   (define count 0)
-  (define if f)
   (lambda (input)
     (cond ((eq? input 'how-many-calls?) count)
-	  ((eq? input 'reset-count) 
-	   (set! count 0)
-	   count)
+	  ((eq? input 'reset-count) (set! count 0))
 	  (else 
 	    (set! count (+ count 1))
-	    (if input)))))
+	    (f input)))))
 
 (define s (make-monitored sqrt))
 

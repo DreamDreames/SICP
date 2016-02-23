@@ -34,3 +34,4 @@
 (define t2 (cons t1 t1))
 (newline)
 (display (cycle? t2))
+; #f

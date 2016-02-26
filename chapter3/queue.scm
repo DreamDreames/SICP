@@ -28,3 +28,21 @@
 	(else 
 	  (set-front-ptr! queue (cdr (front-ptr queue)))
 	  queue)))
+
+(define q (make-queue))
+(insert-queue! q 'a)
+; a
+(insert-queue! q 'b)
+; a b
+(delete-queue! q)
+; b
+(insert-queue! q 'c)
+; b c
+(insert-queue! q 'd)
+; b c d
+(delete-queue! q)
+; c d
+
+(newline)
+(display (front-queue q))
+; c

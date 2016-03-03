@@ -1,47 +1,58 @@
 (define (make-tree entry left right)
   (list entry left right))
 (define (entry tree) (car tree))
-(define (left-branch tree) (caar tree))
+(define (left-branch tree) (cadr tree))
 (define (right-branch tree) (caddr tree))
 
 (define (adjoin-set x set)
   (cond ((null? set) (make-tree x '() '()))
+	((eq? (car x) (car (entry set))) set)
 	((< (car x) (car (entry set)))
-	 (let ((left (left-branch set)))
-	   (set! left (adjoin-set x left))))
+	 (make-tree (entry set)
+		    (adjoin-set x (left-branch set))
+		    (right-branch set)))
 	((> (car x) (car (entry set)))
-	 (let ((right (right-branch set)))
-	   (set! right (adjoin-set x right))))))
-(define (assoc key tree)
-  (cond ((null? tree) false)
-	((eq? key (car (entry tree)) (entry tree)))
-	((< key (car (entry tree)) (assoc key (left-branch tree))))
-	((> key (car (entry tree)) (assoc key (right-branch tree))))))
+	 (make-tree (entry set)
+		    (left-branch set)
+		    (adjoin-set x (right-branch set))))))
 
 (define (make-table)
-  (let ((local-table (list '*table*)))
-    (define (lookup key) 
-      (let ((record (assoc key (cdr local-table)))) 
-	(if record 
-	  (cdr record) 
-	  false))) 
+  (let ((local-table '()))
+
+    (define (lookup-rec key set) 
+      (cond ((null? set) false)
+	    ((eq? key (car (entry set))) (entry set))
+	    ((< key (car (entry set))) (lookup-rec key (left-branch set)))
+	    ((> key (car (entry set))) (lookup-rec key (right-branch set)))))
+
     (define (insert! key value) 
-      (let ((record (assoc key (cdr local-table)))) 
+      (let ((record (lookup-rec key local-table))) 
 	(if record 
 	  (set-cdr! record value) 
-	  (adjoin-set (cons key value) (cdr local-table)))
-	'ok))
+	  (set! local-table (adjoin-set (cons key value) local-table)))))
+
+    (define (lookup key)
+      (lookup-rec key local-table))
+    (define (print-table)
+      (display local-table))
     (define (dispatch m)
       (cond ((eq? m 'look-up) lookup)
 	    ((eq? m 'insert!) insert!)
+	    ((eq? m 'print) print-table)
 	    (else (error "Operation not defined!" m))))
     dispatch))
 
 
 (define tbl (make-table))
 ((tbl 'insert!) 1 'a)
+
 ((tbl 'insert!) 3 'c)
+
 ((tbl 'insert!) 2 'b)
+
 (newline)
-(display ((tbl 'look-up) 'c))
-; 3
+((tbl 'print))
+
+(newline)
+(display ((tbl 'look-up) 3))
+; c

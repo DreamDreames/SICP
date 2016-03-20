@@ -223,7 +223,7 @@
 
 (define (cv x)
   (let ((z (make-connector)))
-    (set-value! z x 'init)
+    (constant x z)
     z))
 
 (define C1 (make-connector))

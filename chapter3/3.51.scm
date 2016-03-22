@@ -1,3 +1,8 @@
+; http://stackoverflow.com/questions/14640833/how-is-the-sicp-cons-stream-implemented
+; delay should be defined as a macro
+; If it's a function, scheme will try to evaluate its args before exec
+; So just use the system defined delay in this exercise
+
 (define the-empty-stream '())
 
 (define (stream-ref s n)

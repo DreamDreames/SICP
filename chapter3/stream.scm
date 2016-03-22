@@ -1,3 +1,5 @@
+(define the-empty-stream '())
+
 (define (stream-ref s n)
   (if (= n 0)
     (stream-car s)
@@ -5,6 +7,7 @@
 
 (define (stream-map proc s)
   (if (stream-null? s)
+    the-empty-stream
     (cons-stream (proc (stream-car s))
                  (stream-map proc (stream-cdr s)))))
 

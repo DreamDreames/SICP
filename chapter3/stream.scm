@@ -21,8 +21,10 @@
   (newline)
   (display x))
 
+(define (cons-stream a b) (cons a (delay b)))
 (define (stream-car stream) (car stream))
 (define (stream-cdr stream) (force (cdr stream)))
+(define (stream-null? s) (null? s))
 
 (define (stream-enumerate-interval low high)
   (if (> low high)
@@ -30,9 +32,6 @@
     (cons-stream
       low 
       (stream-enumerate-interval (+ low 1) high))))
-
-(cons 100
-      (delay (stream-enumerate-interval 101 110)))
 
 (define (stream-filter pred stream)
   (cond ((stream-null? stream) the-empty-stream)
@@ -56,3 +55,7 @@
 (define (delay expression)
   (lambda()
     expression))
+
+(define interval (stream-enumerate-interval 101 110))
+(newline)
+(display-stream interval)

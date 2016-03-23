@@ -5,12 +5,6 @@
     (stream-car s)
     (stream-ref (stream-cdr s) (- n 1))))
 
-(define (stream-map proc s)
-  (if (stream-null? s)
-    the-empty-stream
-    (cons-stream (proc (stream-car s))
-                 (stream-map proc (stream-cdr s)))))
-
 (define (stream-for-each proc s)
   (if (stream-null? s)
     'done
@@ -24,7 +18,6 @@
   (newline)
   (display x))
 
-(define (cons-stream a b) (cons a (delay b)))
 (define (stream-car stream) (car stream))
 (define (stream-cdr stream) (force (cdr stream)))
 (define (stream-null? s) (null? s))
@@ -44,18 +37,37 @@
                                      (stream-cdr stream))))
         (else (stream-filter pred (stream-cdr stream)))))
 
-(define (force delayed-object)
-  (delayed-object))
+(define sum 0)
 
-(define (memo-proc proc)
-  (let ((already-run? false) (result false))
-    (lambda()
-      (if (not already-run?)
-        (begin (set! result (proc))
-               (set! already-run? true)
-               result)
-        result))))
-
-(define interval (stream-enumerate-interval 101 110))
+(define (accum x)
+  (set! sum (+ x sum))
+  sum)
+(define seq (stream-map accum (stream-enumerate-interval 1 20)))
 (newline)
-(display-stream interval)
+(display "sum is ")
+(display sum)
+; 1
+(define y (stream-filter even? seq))
+(newline)
+(display "sum is ")
+(display sum)
+; 6
+
+(define z (stream-filter (lambda (x) (= (remainder x 5) 0))
+                         seq))
+(newline)
+(display "sum is ")
+(display sum)
+; 10
+
+(stream-ref y 7)
+(newline)
+(display "sum is ")
+(display sum)
+; 136
+
+(display-stream z)
+(newline)
+(display "sum is ")
+(display sum)
+; 210

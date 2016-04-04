@@ -8,6 +8,7 @@
  10)
 ; 10!
 
+; a)
 ((lambda (n)
    ((lambda (fib)
       (fib fib n))
@@ -17,3 +18,14 @@
         (+ (fi fi (- k 1)) (fi fi (- k 2)))))))
  6)
 ; fib 6 = 8
+
+; b)
+(define (f x)
+  ((lambda (new-even? new-odd?)
+     (new-even? new-even? new-odd? x))
+   (lambda (ev? od? n)
+     (if (= n 0) true (od? ev? od? (- n 1))))
+   (lambda (ev? od? n)
+     (if (= n 0) false (ev? ev? od? (- n 1))))))
+
+

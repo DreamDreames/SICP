@@ -298,8 +298,8 @@
                    '<procedure-env>))
     (display object)))
 
-;(define the-global-environment (setup-environment))
-(driver-loop)
+; Uncomment the following to start the REPL loop
+;(driver-loop)
 
 ; input the following to test
 ; (define (new-add a b) (+ a b))

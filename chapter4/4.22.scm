@@ -13,6 +13,7 @@
         ((lambda? exp) (analyze-lambda exp))
         ((begin? exp) (analyze-sequence (begin-actions exp)))
         ((cond? exp) (analyze (cond->if exp)))
+        ((let? exp) (analyze (let->combination exp)))
         ((application? exp) (analyze-application exp))
         (else
           (error "Unknown expression type -- ANALYZE" exp))))
@@ -90,5 +91,23 @@
             "Unknown procedure type -- EXECUTE-APPLICATION"
             proc))))
 
-; Uncomment to start the eval loop
-;(driver-loop)
+(define (let? exp) (tagged-list? exp 'let))
+(define (let->combination exp)
+  (expand-let exp))
+
+(define (expand-let clauses)
+  (define (let-vars varexp)
+    (map car (cadr varexp)))
+  (define (let-exps varexp)
+    (map cadr (cadr varexp)))
+  (let ((body (cddr clauses)))
+    (cons (make-lambda (let-vars clauses) body)
+          (let-exps clauses))))
+
+(driver-loop)
+
+;; test
+; input
+; (define (new-add a b) (let ((c (+ a 1))) (+ b c)))
+; (new-add 3 4)
+; 8

@@ -319,3 +319,6 @@
 ; (define (new-add a b) (let ((c (+ a 1))) (+ b c)))
 ; (new-add 3 4)
 ; 8
+; (define (new-add-2 a b) (let ((c (+ a 1)) (d (+ 1 0))) (+ b c d)))
+; (new-add-2 3 4)
+; 9

@@ -1,20 +1,6 @@
 ; save the original one...
 (define apply-in-underlying-scheme apply)
 
-(define (apply procedure arguments)
-  (cond ((primitive-procedure? procedure)
-         (apply-primitive-procedure procedure arguments))
-        ((compound-procedure? procedure)
-         (eval-sequence
-           (procedure-body procedure)
-           (extend-evnironment
-             (procedure-parameters procedure)
-             arguments
-             (procedure-environment procedure))))
-        (else
-          (error
-            "Unknown procedure type -- APPLY" procedure))))
-
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
         ((variable? exp) (lookup-variable-value exp env))
@@ -34,6 +20,20 @@
                 (list-of-values (operands exp) env)))
         (else
           (error "Unknown expression type -- EVAL" exp))))
+
+(define (apply procedure arguments)
+  (cond ((primitive-procedure? procedure)
+         (apply-primitive-procedure procedure arguments))
+        ((compound-procedure? procedure)
+         (eval-sequence
+           (procedure-body procedure)
+           (extend-environment
+             (procedure-parameters procedure)
+             arguments
+             (procedure-environment procedure))))
+        (else
+          (error
+            "Unknown procedure type -- APPLY" procedure))))
 
 (define (list-of-values exps env)
   (if (no-operands? exps)
@@ -68,8 +68,6 @@
         ((string? exp) true)
         (else false)))
 
-(define (variable? exp) (symbol? exp))
-
 (define (quoted? exp)
   (tagged-list? exp 'quote))
 
@@ -79,6 +77,8 @@
   (if (pair? exp)
     (eq? (car exp) tag)
     false))
+
+(define (variable? exp) (symbol? exp))
 
 (define (assignment? exp)
   (tagged-list? exp 'set!))
@@ -93,7 +93,7 @@
 (define (definition-variable exp)
   (if (symbol? (cadr exp))
     (cadr exp)
-    (caddr exp)))
+    (caadr exp)))
 
 (define (definition-value exp)
   (if (symbol? (cadr exp))
@@ -125,7 +125,7 @@
   (list 'if predicate consequent alternative))
 
 (define (begin? exp) (tagged-list? exp 'begin))
-(define (begin-action exp) (cdr exp))
+(define (begin-actions exp) (cdr exp))
 (define (last-exp? seq) (null? (cdr seq)))
 (define (first-exp seq) (car seq))
 (define (rest-exps seq) (cdr seq))
@@ -183,8 +183,8 @@
 (define (first-frame env) (car env))
 (define the-empty-environment '())
 
-(define (make-frame variables values)
-  (cons variables values))
+(define (make-frame variables vals)
+  (cons variables vals))
 (define (frame-variables frame) (car frame))
 (define (frame-values frame) (cdr frame))
 (define (add-binding-to-frame! var val frame)
@@ -221,7 +221,7 @@
             ((eq? var (car vars))
              (set-car! vals val))
             (else (scan (cdr vars) (cdr vals)))))
-    (if (eq? env the-empty-environemtn)
+    (if (eq? env the-empty-environment)
       (error "Unbound variable -- SET!" var)
       (let ((frame (first-frame env)))
         (scan (frame-variables frame)
@@ -244,7 +244,7 @@
         (list 'cdr cdr)
         (list 'cons cons)
         (list 'null? null?)
-        ; <other primitive procedures>
+        (list '+ +)
         ))
 
 (define (primitive-procedure-names)

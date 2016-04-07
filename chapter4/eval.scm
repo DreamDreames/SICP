@@ -300,3 +300,7 @@
 
 ;(define the-global-environment (setup-environment))
 (driver-loop)
+
+; input the following to test
+; (define (new-add a b) (+ a b))
+; (new-add 1 2)

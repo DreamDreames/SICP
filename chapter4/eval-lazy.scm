@@ -24,7 +24,7 @@
         (else
           (error "Unknown expression type -- EVAL" exp))))
 
-(define (apply procedure arguments)
+(define (apply procedure arguments env)
   (cond ((primitive-procedure? procedure)
          ;(apply-primitive-procedure procedure arguments))
          (apply-primitive-procedure 
@@ -41,6 +41,39 @@
         (else
           (error
             "Unknown procedure type -- APPLY" procedure))))
+
+(define (force-it obj)
+  (if (thunk? obj)
+    (actual-value (thunk-exp obj) (thunk-env obj))
+    obj))
+
+(define (delay-it exp env)
+  (list 'thunk exp env))
+
+(define (thunk? obj)
+  (tagged-list? obj 'thunk))
+
+(define (thunk-exp thunk) (cadr thunk))
+
+(define (thunk-env thunk) (caddr thunk))
+
+(define (evaluated-thunk? obj)
+  (tagged-list? obj 'evaluated-thunk))
+
+(define (thunk-value evaluated-thunk) (cadr evaluated-thunk))
+
+(define (force-it obj)
+  (cond ((thunk? obj)
+         (let ((result (actual-value
+                         (thunk-exp obj)
+                         (thunk-env obj))))
+           (set-car! obj 'evaluated-thunk)
+           (set-car! (cdr obj) result)
+           (set-cdr! (cdr obj) '())
+           result))
+        ((evaluated-thunk? obj)
+         (thunk-value obj))
+        (else obj)))
 
 (define (actual-value exp env)
   (force-it (eval exp env)))
@@ -269,6 +302,7 @@
         (list 'cons cons)
         (list 'null? null?)
         (list '+ +)
+        (list '= =)
         ))
 
 (define (primitive-procedure-names)
@@ -325,8 +359,8 @@
     (display object)))
 
 ; Uncomment the following to start the REPL loop
-;(driver-loop)
+(driver-loop)
 
 ; input the following to test
-; (define (new-add a b) (+ a b))
-; (new-add 1 2)
+; (define (try a b) (if (= a 0) 1 b))
+; (try 0 (/ 1 0))

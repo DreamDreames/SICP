@@ -5,6 +5,10 @@
         (require (= (+ (* i i) (* j j)) (* k k)))
         (list i j k)))))
 
+;(define (require p)
+  ;(if (not p) (amb)))
+
 (define (an-integer-between low high)
+  (require (<= low high) 
   (amb low (an-integer-between (+ low 1) high)))
 

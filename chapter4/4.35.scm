@@ -5,6 +5,8 @@
         (require (= (+ (* i i) (* j j)) (* k k)))
         (list i j k)))))
 
+;; evaluating (amb) will cause failure 
+;; and terminate the procedure
 ;(define (require p)
   ;(if (not p) (amb)))
 

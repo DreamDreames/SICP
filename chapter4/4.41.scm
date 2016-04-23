@@ -16,12 +16,12 @@
     (flatmap (lambda (x)
                (map (lambda (y) (cons x y))
                     (permutations (cdr lists))))
-             (cons lists))))
+             (car lists))))
 
 (define (restrictions l)
   (apply
     (lambda (baker cooper fletcher miller smith)
-      (and (> miller copper)
+      (and (> miller cooper)
            (not (= (abs (- smith fletcher)) 1))
            (not (= (abs (- fletcher cooper)) 1))
            (distinct? (list baker cooper fletcher miller smith))))
@@ -40,3 +40,6 @@
         (miller '(3 4 5))
         (smith '(1 2 3 4 5)))
     (filter restrictions (permutations (list baker cooper fletcher miller smith)))))
+
+(newline)
+(display (multiple-dwelling))
